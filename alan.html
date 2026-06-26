@@ -245,6 +245,15 @@ footer{text-align:center;font-size:10.5px;color:#bbb;margin-top:14px}
     <button class="sb" data-t="h" data-s="i"><i>I</i></button>
     <button class="sb" data-t="h" data-s="u"><u>S</u></button>
   </div>
+  <div class="row2" style="margin-top:5px">
+    <div><label>Alineación</label><select id="align-h"><option value="left">Izquierda</option><option value="center">Centro</option><option value="right">Derecha</option></select></div>
+    <div><label>Interlineado</label><div class="rrow" style="margin-top:2px"><input type="range" id="lh-h" min="100" max="200" step="5" value="122"><span id="lh-h-v">1.22</span></div></div>
+  </div>
+  <div class="cg" style="margin-top:5px">
+    <div class="ci"><label>Contorno:</label><input type="color" id="stroke-h" value="#000000"></div>
+    <div class="ci"><label>Grosor contorno:</label><div style="display:flex;align-items:center;gap:3px;flex:1"><input type="range" id="stroke-h-w" min="0" max="8" step="1" value="0" style="flex:1"><span id="stroke-h-w-v" style="font-size:10px;color:#009EE3;font-weight:700;min-width:20px">0</span></div></div>
+    <div class="ci"><label>Opacidad:</label><div style="display:flex;align-items:center;gap:3px;flex:1"><input type="range" id="op-h" min="10" max="100" step="5" value="100" style="flex:1"><span id="op-h-v" style="font-size:10px;color:#009EE3;font-weight:700;min-width:28px">100%</span></div></div>
+  </div>
 
   <!-- SUBTITLE -->
   <div class="sec">Subtítulo</div>
@@ -258,6 +267,15 @@ footer{text-align:center;font-size:10.5px;color:#bbb;margin-top:14px}
     <button class="sb" data-t="s" data-s="b"><b>N</b></button>
     <button class="sb" data-t="s" data-s="i"><i>I</i></button>
     <button class="sb" data-t="s" data-s="u"><u>S</u></button>
+  </div>
+  <div class="row2" style="margin-top:5px">
+    <div><label>Alineación</label><select id="align-s"><option value="left">Izquierda</option><option value="center">Centro</option><option value="right">Derecha</option></select></div>
+    <div><label>Interlineado</label><div class="rrow" style="margin-top:2px"><input type="range" id="lh-s" min="100" max="200" step="5" value="130"><span id="lh-s-v">1.30</span></div></div>
+  </div>
+  <div class="cg" style="margin-top:5px">
+    <div class="ci"><label>Contorno:</label><input type="color" id="stroke-s" value="#000000"></div>
+    <div class="ci"><label>Grosor contorno:</label><div style="display:flex;align-items:center;gap:3px;flex:1"><input type="range" id="stroke-s-w" min="0" max="8" step="1" value="0" style="flex:1"><span id="stroke-s-w-v" style="font-size:10px;color:#009EE3;font-weight:700;min-width:20px">0</span></div></div>
+    <div class="ci"><label>Opacidad:</label><div style="display:flex;align-items:center;gap:3px;flex:1"><input type="range" id="op-s" min="10" max="100" step="5" value="100" style="flex:1"><span id="op-s-v" style="font-size:10px;color:#009EE3;font-weight:700;min-width:28px">100%</span></div></div>
   </div>
 
   <!-- TEXT BOX 2 -->
@@ -277,6 +295,16 @@ footer{text-align:center;font-size:10.5px;color:#bbb;margin-top:14px}
     <button class="sb active" data-t="t2" data-s="b"><b>N</b></button>
     <button class="sb" data-t="t2" data-s="i"><i>I</i></button>
     <button class="sb" data-t="t2" data-s="u"><u>S</u></button>
+  </div>
+  <div class="row2" style="margin-top:5px">
+    <div><label>Alineación</label><select id="align-t2"><option value="left">Izquierda</option><option value="center">Centro</option><option value="right">Derecha</option></select></div>
+    <div><label>Interlineado</label><div class="rrow" style="margin-top:2px"><input type="range" id="lh-t2" min="100" max="200" step="5" value="130"><span id="lh-t2-v">1.30</span></div></div>
+  </div>
+  <div class="cg" style="margin-top:5px">
+    <div class="ci"><label>Contorno:</label><input type="color" id="stroke-t2" value="#000000"></div>
+    <div class="ci"><label>Grosor contorno:</label><div style="display:flex;align-items:center;gap:3px;flex:1"><input type="range" id="stroke-t2-w" min="0" max="8" step="1" value="0" style="flex:1"><span id="stroke-t2-w-v" style="font-size:10px;color:#009EE3;font-weight:700;min-width:20px">0</span></div></div>
+    <div class="ci"><label>Radio fondo:</label><div style="display:flex;align-items:center;gap:3px;flex:1"><input type="range" id="bg-t2-r" min="0" max="40" step="2" value="8" style="flex:1"><span id="bg-t2-r-v" style="font-size:10px;color:#009EE3;font-weight:700;min-width:20px">8</span></div></div>
+    <div class="ci"><label>Opacidad texto:</label><div style="display:flex;align-items:center;gap:3px;flex:1"><input type="range" id="op-t2" min="10" max="100" step="5" value="100" style="flex:1"><span id="op-t2-v" style="font-size:10px;color:#009EE3;font-weight:700;min-width:28px">100%</span></div></div>
   </div>
 
   <!-- HASHTAGS -->
@@ -371,6 +399,8 @@ footer{text-align:center;font-size:10.5px;color:#bbb;margin-top:14px}
 
 <script>
 const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+ctx.imageSmoothingEnabled=true;
+ctx.imageSmoothingQuality='high';
 const W=1200,H=627;
 let userBgImg=null,footerBgImg=null,layout=1,overlayType='azul',footerBgMode='solid',patType='dots';
 const ST={h:{bold:true,italic:false,underline:false},s:{bold:false,italic:false,underline:false},t2:{bold:true,italic:false,underline:false},c:{bold:true,italic:false,underline:false},cr:{bold:false,italic:false,underline:false},ci:{bold:false,italic:false,underline:false}};
@@ -557,7 +587,7 @@ document.getElementById('overlay-btns').addEventListener('click',e=>{
 });
 
 // ── INPUTS ────────────────────────────────────────────────────────────────────
-const WATCH=['txt-h','txt-s','txt-t2','txt-hash','txt-name','txt-r1','txt-r2','txt-ph','txt-em',
+const WATCH=['txt-h','txt-s','txt-t2','txt-hash','txt-name','txt-r1','txt-r2','txt-ph','txt-em','align-h','align-s','align-t2',
   'col-h','col-s','col-t2','bg-t2','col-hash','bg-hash','cc-n','cc-r','cc-i',
   'sh-h','sh-c','ov-col','fb-col','fl-col','fg-c1','fg-c2','fg-dir','fp-c1','fp-c2',
   'bg-c1','bg-c2','bg-dir','fn-h','fn-s','fn-t2','fn-c','fn-hash','sh-h-on','sh-c-on',
@@ -566,7 +596,12 @@ WATCH.forEach(id=>{const e=document.getElementById(id);if(e)e.addEventListener('
 
 const SLS=[['fs-h','fs-h-v','px'],['fs-s','fs-s-v','px'],['fs-t2','fs-t2-v','px'],['fs-c','fs-c-v','px'],
   ['fs-hash','fs-hash-v','px'],['fh-sl','fh-v','%'],['op-sl','op-v','%'],
-  ['fb-op','fb-op-v','%'],['fl-h','fl-h-v','px'],['bg-t2-op','bg-t2-op-v','%'],['hash-r','hash-r-v','px']];
+  ['fb-op','fb-op-v','%'],['fl-h','fl-h-v','px'],['bg-t2-op','bg-t2-op-v','%'],['hash-r','hash-r-v','px'],
+  ['stroke-h-w','stroke-h-w-v',''],['stroke-s-w','stroke-s-w-v',''],['stroke-t2-w','stroke-t2-w-v',''],
+  ['op-h','op-h-v','%'],['op-s','op-s-v','%'],['op-t2','op-t2-v','%'],['bg-t2-r','bg-t2-r-v',''],
+  ['fbimg-op','fbimg-op-v','%']];
+// Interlineado (factor x100): mostrar como decimal
+['lh-h','lh-s','lh-t2'].forEach(id=>{const el=document.getElementById(id),vEl=document.getElementById(id+'-v');if(el&&vEl){vEl.textContent=(el.value/100).toFixed(2);el.addEventListener('input',()=>{vEl.textContent=(el.value/100).toFixed(2);updateFooterPreview();draw();});}});
 SLS.forEach(([s,vl,u])=>{const el=document.getElementById(s),ve=document.getElementById(vl);if(el&&ve)el.addEventListener('input',()=>{ve.textContent=el.value+u;updateFooterPreview();draw();});});
 
 // BG IMAGE
@@ -616,6 +651,8 @@ function clearShadow(){setShadow('transparent',false);}
 // Draw image with full 360° rotation
 function drawRotImg(img,x,y,w,h,rot){
   ctx.save();
+  ctx.imageSmoothingEnabled=true;
+  ctx.imageSmoothingQuality='high';
   ctx.translate(x+w/2,y+h/2);
   ctx.rotate(rot*Math.PI/180);
   ctx.drawImage(img,-w/2,-h/2,w,h);
@@ -693,15 +730,74 @@ function draw(){
 
   // Heading
   const eH=gel('heading');
-  if(eH.visible){const fsH=fsi('fs-h'),fn=v('fn-h');ctx.textBaseline='top';ctx.font=bfont(fsH,ST.h,fn);setShadow(v('sh-h'),chk('sh-h-on'));ctx.fillStyle=v('col-h');const lines=wrapLines(v('txt-h'),Math.min(760,W-eH.x-40));const lh=fsH*1.22;lines.forEach((l,i)=>{ctx.fillText(l,eH.x,eH.y+i*lh);if(ST.h.underline)ctx.fillRect(eH.x,eH.y+i*lh+fsH+2,ctx.measureText(l).width,Math.max(2,fsH*.05));});clearShadow();drawSelBorder(eH,760,lines.length*lh);}
+  if(eH.visible){
+    const fsH=fsi('fs-h'),fn=v('fn-h'),alignH=v('align-h')||'left';
+    const lhH=fsH*(fsi('lh-h')/100||1.22);
+    const swH=fsi('stroke-h-w'),opH=fsi('op-h')/100;
+    const maxW=Math.min(760,W-eH.x-40);
+    ctx.textBaseline='top';ctx.font=bfont(fsH,ST.h,fn);
+    ctx.textAlign=alignH;
+    setShadow(v('sh-h'),chk('sh-h-on'));
+    ctx.save();ctx.globalAlpha=opH;
+    ctx.fillStyle=v('col-h');
+    const linesH=wrapLines(v('txt-h'),maxW);
+    const axH=alignH==='center'?eH.x+maxW/2:alignH==='right'?eH.x+maxW:eH.x;
+    linesH.forEach((l,i)=>{
+      if(swH>0){ctx.lineWidth=swH*2;ctx.strokeStyle=v('stroke-h');ctx.strokeText(l,axH,eH.y+i*lhH);}
+      ctx.fillText(l,axH,eH.y+i*lhH);
+      if(ST.h.underline){const tw=ctx.measureText(l).width;const ux=alignH==='center'?axH-tw/2:alignH==='right'?axH-tw:axH;ctx.fillRect(ux,eH.y+i*lhH+fsH+2,tw,Math.max(2,fsH*.05));}
+    });
+    ctx.restore();ctx.textAlign='left';
+    clearShadow();drawSelBorder(eH,maxW,linesH.length*lhH);
+  }
 
   // Subtitle
   const eS=gel('sub');
-  if(eS.visible){const fsS=fsi('fs-s'),fn=v('fn-s');ctx.textBaseline='top';ctx.font=bfont(fsS,ST.s,fn);ctx.fillStyle=v('col-s');const lines=wrapLines(v('txt-s'),Math.min(760,W-eS.x-40));const lh=fsS*1.3;lines.forEach((l,i)=>{ctx.fillText(l,eS.x,eS.y+i*lh);if(ST.s.underline)ctx.fillRect(eS.x,eS.y+i*lh+fsS+2,ctx.measureText(l).width,Math.max(2,fsS*.05));});drawSelBorder(eS,760,lines.length*lh);}
+  if(eS.visible){
+    const fsS=fsi('fs-s'),fn=v('fn-s'),alignS=v('align-s')||'left';
+    const lhS=fsS*(fsi('lh-s')/100||1.3);
+    const swS=fsi('stroke-s-w'),opS=fsi('op-s')/100;
+    const maxWS=Math.min(760,W-eS.x-40);
+    ctx.textBaseline='top';ctx.font=bfont(fsS,ST.s,fn);
+    ctx.textAlign=alignS;
+    ctx.save();ctx.globalAlpha=opS;
+    ctx.fillStyle=v('col-s');
+    const linesS=wrapLines(v('txt-s'),maxWS);
+    const axS=alignS==='center'?eS.x+maxWS/2:alignS==='right'?eS.x+maxWS:eS.x;
+    linesS.forEach((l,i)=>{
+      if(swS>0){ctx.lineWidth=swS*2;ctx.strokeStyle=v('stroke-s');ctx.strokeText(l,axS,eS.y+i*lhS);}
+      ctx.fillText(l,axS,eS.y+i*lhS);
+      if(ST.s.underline){const tw=ctx.measureText(l).width;const ux=alignS==='center'?axS-tw/2:alignS==='right'?axS-tw:axS;ctx.fillRect(ux,eS.y+i*lhS+fsS+2,tw,Math.max(2,fsS*.05));}
+    });
+    ctx.restore();ctx.textAlign='left';
+    drawSelBorder(eS,maxWS,linesS.length*lhS);
+  }
 
   // Text box 2
   const eT2=gel('t2');
-  if(eT2.visible){const fsT2=fsi('fs-t2'),fn=v('fn-t2');ctx.textBaseline='top';ctx.font=bfont(fsT2,ST.t2,fn);const lines=wrapLines(v('txt-t2'),Math.min(680,W-eT2.x-40));const lh=fsT2*1.3,pad=12;const boxW=Math.max(...lines.map(l=>ctx.measureText(l).width))+pad*2;const boxH=lines.length*lh+pad*2;if(chk('bg-t2-on')){const op=fsi('bg-t2-op')/100;ctx.fillStyle=hexRgba(v('bg-t2'),op);ctx.beginPath();ctx.roundRect(eT2.x-pad,eT2.y-pad,boxW,boxH,8);ctx.fill();}ctx.fillStyle=v('col-t2');lines.forEach((l,i)=>{ctx.fillText(l,eT2.x,eT2.y+i*lh);if(ST.t2.underline)ctx.fillRect(eT2.x,eT2.y+i*lh+fsT2+2,ctx.measureText(l).width,Math.max(2,fsT2*.05));});drawSelBorder(eT2,boxW,boxH);}
+  if(eT2.visible){
+    const fsT2=fsi('fs-t2'),fn=v('fn-t2'),alignT2=v('align-t2')||'left';
+    const lhT2=fsT2*(fsi('lh-t2')/100||1.3);
+    const swT2=fsi('stroke-t2-w'),opT2=fsi('op-t2')/100;
+    const bgRad=fsi('bg-t2-r')||8;
+    const maxWT2=Math.min(680,W-eT2.x-40);
+    ctx.textBaseline='top';ctx.font=bfont(fsT2,ST.t2,fn);ctx.textAlign='left';
+    const linesT2=wrapLines(v('txt-t2'),maxWT2);
+    const pad=12;
+    const boxW=Math.max(...linesT2.map(l=>ctx.measureText(l).width))+pad*2;
+    const boxH=linesT2.length*lhT2+pad*2;
+    if(chk('bg-t2-on')){const op2=fsi('bg-t2-op')/100;ctx.fillStyle=hexRgba(v('bg-t2'),op2);ctx.beginPath();ctx.roundRect(eT2.x-pad,eT2.y-pad,boxW,boxH,bgRad);ctx.fill();}
+    ctx.textAlign=alignT2;
+    const axT2=alignT2==='center'?eT2.x+maxWT2/2:alignT2==='right'?eT2.x+maxWT2:eT2.x;
+    ctx.save();ctx.globalAlpha=opT2;ctx.fillStyle=v('col-t2');
+    linesT2.forEach((l,i)=>{
+      if(swT2>0){ctx.lineWidth=swT2*2;ctx.strokeStyle=v('stroke-t2');ctx.strokeText(l,axT2,eT2.y+i*lhT2);}
+      ctx.fillText(l,axT2,eT2.y+i*lhT2);
+      if(ST.t2.underline){const tw=ctx.measureText(l).width;const ux=alignT2==='center'?axT2-tw/2:alignT2==='right'?axT2-tw:axT2;ctx.fillRect(ux,eT2.y+i*lhT2+fsT2+2,tw,Math.max(2,fsT2*.05));}
+    });
+    ctx.restore();ctx.textAlign='left';
+    drawSelBorder(eT2,boxW,boxH);
+  }
 
   // Hashtags
   const eHash=gel('hashtags');
@@ -718,7 +814,18 @@ function draw(){
 
 document.getElementById('dl-png').addEventListener('click',()=>dl('png','post-linkedin-mp.png'));
 document.getElementById('dl-jpg').addEventListener('click',()=>dl('jpeg','post-linkedin-mp.jpg'));
-function dl(t,n){const a=document.createElement('a');a.download=n;a.href=cv.toDataURL('image/'+t,0.95);a.click();}
+function dl(t,n){
+  // Re-activar alta calidad antes de exportar
+  ctx.imageSmoothingEnabled=true;
+  ctx.imageSmoothingQuality='high';
+  draw();
+  const a=document.createElement('a');
+  a.download=n;
+  // PNG sin pérdida, JPG a calidad máxima 1.0
+  const q=(t==='png')?undefined:1.0;
+  a.href=cv.toDataURL('image/'+t,q);
+  a.click();
+}
 
 updateFooterPreview();
 
