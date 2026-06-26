@@ -232,6 +232,13 @@ footer{text-align:center;font-size:10.5px;color:#bbb;margin-top:14px}
     </div>
     <img id="footer-bg-img-preview" class="thumb" alt="">
     <div class="rrow" style="margin-top:5px"><label>Opacidad</label><input type="range" id="fbimg-op" min="10" max="100" step="5" value="80"><span id="fbimg-op-v">80%</span></div>
+    <div class="rrow" style="margin-top:5px"><label>Zoom</label><input type="range" id="fbimg-zoom" min="50" max="300" step="5" value="100"><span id="fbimg-zoom-v">100%</span></div>
+    <div class="rot-wrap" style="margin-top:5px">
+      <label>Rotación</label>
+      <input type="range" id="fbimg-rot" min="-180" max="180" step="1" value="0">
+      <input type="number" id="fbimg-rot-num" min="-180" max="180" value="0" style="width:58px;font-size:12px;padding:4px 6px;border-radius:6px;border:1px solid #cdd5e0;background:#fafbfc;color:#222;text-align:center">
+      <span id="fbimg-rot-v">0°</span>
+    </div>
   </div>
 
   <!-- ALTURA BARRA (always visible) -->
@@ -570,7 +577,17 @@ document.getElementById('add-img-btn').addEventListener('click',addExtraImgSlot)
 // Footer BG image
 window.loadFooterBgImg=function(input){
   if(!input.files[0])return;
-  const r=new FileReader();r.onload=e=>{const i=new Image();i.onload=()=>{footerBgImg=i;document.getElementById('footer-bg-img-preview').src=e.target.result;document.getElementById('footer-bg-img-preview').style.display='block';draw();};i.src=e.target.result;};r.readAsDataURL(input.files[0]);
+  const r=new FileReader();r.onload=e=>{const i=new Image();i.onload=()=>{footerBgImg=i;document.getElementById('footer-bg-img-preview').src=e.target.result;document.getElementById('footer-bg-img-preview').style.display='block';// Reset zoom/rot
+const fz=document.getElementById('fbimg-zoom'),fr=document.getElementById('fbimg-rot'),frn=document.getElementById('fbimg-rot-num');if(fz){fz.value=100;document.getElementById('fbimg-zoom-v').textContent='100%';}if(fr){fr.value=0;document.getElementById('fbimg-rot-v').textContent='0°';}if(frn)frn.value=0;draw();};i.src=e.target.result;};r.readAsDataURL(input.files[0]);
+}
+// Footer bg zoom
+const fbZoom=document.getElementById('fbimg-zoom'),fbZoomV=document.getElementById('fbimg-zoom-v');
+if(fbZoom){fbZoom.addEventListener('input',()=>{fbZoomV.textContent=fbZoom.value+'%';draw();});}
+// Footer bg rotation
+const fbRot=document.getElementById('fbimg-rot'),fbRotNum=document.getElementById('fbimg-rot-num'),fbRotV=document.getElementById('fbimg-rot-v');
+function syncFbRot(val){const v=Math.max(-180,Math.min(180,parseInt(val)||0));if(fbRot)fbRot.value=v;if(fbRotNum)fbRotNum.value=v;if(fbRotV)fbRotV.textContent=v+'°';draw();}
+if(fbRot)fbRot.addEventListener('input',()=>syncFbRot(fbRot.value));
+if(fbRotNum)fbRotNum.addEventListener('input',()=>syncFbRot(fbRotNum.value));
 };
 
 // ── STYLE BUTTONS ─────────────────────────────────────────────────────────────
@@ -609,7 +626,8 @@ const SLS=[['fs-h','fs-h-v','px'],['fs-s','fs-s-v','px'],['fs-t2','fs-t2-v','px'
   ['stroke-h-w','stroke-h-w-v',''],['stroke-s-w','stroke-s-w-v',''],['stroke-t2-w','stroke-t2-w-v',''],
   ['op-h','op-h-v','%'],['op-s','op-s-v','%'],['op-t2','op-t2-v','%'],['bg-t2-r','bg-t2-r-v',''],
   ['fbimg-op','fbimg-op-v','%'],
-  ['bg-zoom','bg-zoom-v','%']];
+  ['bg-zoom','bg-zoom-v','%'],
+  ['fbimg-zoom','fbimg-zoom-v','%']];
 // Interlineado (factor x100): mostrar como decimal
 ['lh-h','lh-s','lh-t2'].forEach(id=>{const el=document.getElementById(id),vEl=document.getElementById(id+'-v');if(el&&vEl){vEl.textContent=(el.value/100).toFixed(2);el.addEventListener('input',()=>{vEl.textContent=(el.value/100).toFixed(2);updateFooterPreview();draw();});}});
 SLS.forEach(([s,vl,u])=>{const el=document.getElementById(s),ve=document.getElementById(vl);if(el&&ve)el.addEventListener('input',()=>{ve.textContent=el.value+u;updateFooterPreview();draw();});});
@@ -738,7 +756,22 @@ function drawFooterBand(fby){
     else if(patType==='grid'){ctx.lineWidth=1;ctx.strokeStyle=v('fp-c2');for(let x=0;x<W;x+=24){ctx.beginPath();ctx.moveTo(x,fby);ctx.lineTo(x,H);ctx.stroke();}for(let y=fby;y<H;y+=24){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}}
     else if(patType==='chevron'){ctx.lineWidth=2;ctx.strokeStyle=v('fp-c2');for(let x=-fh;x<W+fh;x+=40){ctx.beginPath();ctx.moveTo(x,fby);ctx.lineTo(x+20,fby+fh/2);ctx.lineTo(x,H);ctx.stroke();}}
   } else if(footerBgMode==='image'&&imgOk(footerBgImg)){
-    const op=fsi('fbimg-op')/100;ctx.save();ctx.globalAlpha=op;const ir=footerBgImg.width/footerBgImg.height,cr=W/fh;let sw,sh,sx,sy;if(ir>cr){sh=footerBgImg.height;sw=sh*cr;sx=(footerBgImg.width-sw)/2;sy=0;}else{sw=footerBgImg.width;sh=sw/cr;sx=0;sy=(footerBgImg.height-sh)/2;}ctx.drawImage(footerBgImg,sx,sy,sw,sh,0,fby,W,fh);ctx.restore();
+    const op=fsi('fbimg-op')/100;
+    const zoom=(parseFloat(document.getElementById('fbimg-zoom')?.value)||100)/100;
+    const rot=(parseFloat(document.getElementById('fbimg-rot')?.value)||0)*Math.PI/180;
+    ctx.save();
+    ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+    ctx.globalAlpha=op;
+    // cover base para la barra
+    const ir=footerBgImg.width/footerBgImg.height,cr=W/fh;
+    let bw,bh;
+    if(ir>cr){bh=fh;bw=bh*ir;}else{bw=W;bh=bw/ir;}
+    bw*=zoom;bh*=zoom;
+    // centrar en la barra y rotar
+    ctx.translate(W/2,fby+fh/2);
+    ctx.rotate(rot);
+    ctx.drawImage(footerBgImg,-bw/2,-bh/2,bw,bh);
+    ctx.restore();
   }
   const lh=fsi('fl-h');if(lh>0){ctx.fillStyle=v('fl-col');ctx.fillRect(0,fby-lh,W,lh);}
 }
