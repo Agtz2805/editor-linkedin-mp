@@ -618,7 +618,6 @@ const fbRot=document.getElementById('fbimg-rot'),fbRotNum=document.getElementByI
 function syncFbRot(val){const v=Math.max(-180,Math.min(180,parseInt(val)||0));if(fbRot)fbRot.value=v;if(fbRotNum)fbRotNum.value=v;if(fbRotV)fbRotV.textContent=v+' grados';draw();}
 if(fbRot)fbRot.addEventListener('input',()=>syncFbRot(fbRot.value));
 if(fbRotNum)fbRotNum.addEventListener('input',()=>syncFbRot(fbRotNum.value));
-};
 
 // ── STYLE BUTTONS ─────────────────────────────────────────────────────────────
 document.querySelectorAll('.sb').forEach(btn=>{
