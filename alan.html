@@ -107,6 +107,15 @@ footer{text-align:center;font-size:10.5px;color:#bbb;margin-top:14px}
   </div>
   <img id="img-preview" alt="">
   <button id="remove-bg">✕ Quitar imagen de fondo</button>
+  <div id="bg-controls" style="display:none">
+    <div class="rrow" style="margin-top:6px"><label>Zoom</label><input type="range" id="bg-zoom" min="50" max="200" step="5" value="100"><span id="bg-zoom-v">100%</span></div>
+    <div class="rot-wrap" style="margin-top:5px">
+      <label>Rotación</label>
+      <input type="range" id="bg-rot" min="-180" max="180" step="1" value="0">
+      <input type="number" id="bg-rot-num" min="-180" max="180" value="0" style="width:58px;font-size:12px;padding:4px 6px;border-radius:6px;border:1px solid #cdd5e0;background:#fafbfc;color:#222;text-align:center">
+      <span id="bg-rot-v">0°</span>
+    </div>
+  </div>
 
   <div class="sec">Overlay</div>
   <div class="obtn-row" id="overlay-btns">
@@ -599,7 +608,8 @@ const SLS=[['fs-h','fs-h-v','px'],['fs-s','fs-s-v','px'],['fs-t2','fs-t2-v','px'
   ['fb-op','fb-op-v','%'],['fl-h','fl-h-v','px'],['bg-t2-op','bg-t2-op-v','%'],['hash-r','hash-r-v','px'],
   ['stroke-h-w','stroke-h-w-v',''],['stroke-s-w','stroke-s-w-v',''],['stroke-t2-w','stroke-t2-w-v',''],
   ['op-h','op-h-v','%'],['op-s','op-s-v','%'],['op-t2','op-t2-v','%'],['bg-t2-r','bg-t2-r-v',''],
-  ['fbimg-op','fbimg-op-v','%']];
+  ['fbimg-op','fbimg-op-v','%'],
+  ['bg-zoom','bg-zoom-v','%']];
 // Interlineado (factor x100): mostrar como decimal
 ['lh-h','lh-s','lh-t2'].forEach(id=>{const el=document.getElementById(id),vEl=document.getElementById(id+'-v');if(el&&vEl){vEl.textContent=(el.value/100).toFixed(2);el.addEventListener('input',()=>{vEl.textContent=(el.value/100).toFixed(2);updateFooterPreview();draw();});}});
 SLS.forEach(([s,vl,u])=>{const el=document.getElementById(s),ve=document.getElementById(vl);if(el&&ve)el.addEventListener('input',()=>{ve.textContent=el.value+u;updateFooterPreview();draw();});});
@@ -612,8 +622,22 @@ dz.addEventListener('dragover',e=>{e.preventDefault();dz.style.background='#d0ed
 dz.addEventListener('dragleave',()=>dz.style.background='');
 dz.addEventListener('drop',e=>{e.preventDefault();dz.style.background='';loadBg(e.dataTransfer.files[0]);});
 ii.addEventListener('change',()=>loadBg(ii.files[0]));
-function loadBg(f){if(!f)return;const r=new FileReader();r.onload=e=>{const i=new Image();i.onload=()=>{userBgImg=i;ip.src=e.target.result;ip.style.display='block';rb.style.display='block';dz.style.display='none';draw();};i.src=e.target.result;};r.readAsDataURL(f);}
-rb.addEventListener('click',()=>{userBgImg=null;ip.style.display='none';rb.style.display='none';dz.style.display='block';ii.value='';draw();});
+function loadBg(f){if(!f)return;const r=new FileReader();r.onload=e=>{const i=new Image();i.onload=()=>{userBgImg=i;ip.src=e.target.result;ip.style.display='block';rb.style.display='block';dz.style.display='none';document.getElementById('bg-controls').style.display='block';// Reset zoom/rot on new image
+const bz=document.getElementById('bg-zoom');const brr=document.getElementById('bg-rot');const brn=document.getElementById('bg-rot-num');if(bz){bz.value=100;document.getElementById('bg-zoom-v').textContent='100%';}if(brr){brr.value=0;document.getElementById('bg-rot-v').textContent='0°';}if(brn)brn.value=0;draw();};i.src=e.target.result;};r.readAsDataURL(f);}
+rb.addEventListener('click',()=>{userBgImg=null;ip.style.display='none';rb.style.display='none';dz.style.display='block';ii.value='';document.getElementById('bg-controls').style.display='none';draw();});
+
+// Zoom background
+const bgZoomEl=document.getElementById('bg-zoom');
+const bgZoomV=document.getElementById('bg-zoom-v');
+if(bgZoomEl){bgZoomEl.addEventListener('input',()=>{bgZoomV.textContent=bgZoomEl.value+'%';draw();});}
+
+// Rotation background — sincronizar slider y número
+const bgRotEl=document.getElementById('bg-rot');
+const bgRotNum=document.getElementById('bg-rot-num');
+const bgRotV=document.getElementById('bg-rot-v');
+function syncBgRot(val){const v=Math.max(-180,Math.min(180,parseInt(val)||0));if(bgRotEl)bgRotEl.value=v;if(bgRotNum)bgRotNum.value=v;if(bgRotV)bgRotV.textContent=v+'°';draw();}
+if(bgRotEl)bgRotEl.addEventListener('input',()=>syncBgRot(bgRotEl.value));
+if(bgRotNum)bgRotNum.addEventListener('input',()=>syncBgRot(bgRotNum.value));
 
 // ── DRAG ──────────────────────────────────────────────────────────────────────
 let dragging=null,dox=0,doy=0,selectedEl=null;
@@ -669,7 +693,25 @@ function drawSelBorder(el,w,h){
   ctx.setLineDash([]);ctx.restore();
 }
 
-function drawBgImg(){if(!userBgImg)return;const ir=userBgImg.width/userBgImg.height,cr=W/H;let sw,sh,sx,sy;if(ir>cr){sh=userBgImg.height;sw=sh*cr;sx=(userBgImg.width-sw)/2;sy=0;}else{sw=userBgImg.width;sh=sw/cr;sx=0;sy=(userBgImg.height-sh)/2;}ctx.drawImage(userBgImg,sx,sy,sw,sh,0,0,W,H);}
+function drawBgImg(){
+  if(!userBgImg)return;
+  const zoom=(parseFloat(document.getElementById('bg-zoom')?.value)||100)/100;
+  const rot=(parseFloat(document.getElementById('bg-rot')?.value)||0)*Math.PI/180;
+  ctx.save();
+  ctx.imageSmoothingEnabled=true;
+  ctx.imageSmoothingQuality='high';
+  // Calcular dimensiones cover base
+  const ir=userBgImg.width/userBgImg.height,cr=W/H;
+  let bw,bh;
+  if(ir>cr){bh=H;bw=bh*ir;}else{bw=W;bh=bw/ir;}
+  // Aplicar zoom
+  bw*=zoom;bh*=zoom;
+  // Dibujar centrado con rotación
+  ctx.translate(W/2,H/2);
+  ctx.rotate(rot);
+  ctx.drawImage(userBgImg,-bw/2,-bh/2,bw,bh);
+  ctx.restore();
+}
 
 function drawOv(){
   const op=parseInt(v('op-sl'))/100;if(overlayType==='ninguno'||op===0)return;
