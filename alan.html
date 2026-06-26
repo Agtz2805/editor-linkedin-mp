@@ -577,9 +577,8 @@ document.getElementById('add-img-btn').addEventListener('click',addExtraImgSlot)
 // Footer BG image
 window.loadFooterBgImg=function(input){
   if(!input.files[0])return;
-  const r=new FileReader();r.onload=e=>{const i=new Image();i.onload=()=>{footerBgImg=i;document.getElementById('footer-bg-img-preview').src=e.target.result;document.getElementById('footer-bg-img-preview').style.display='block';// Reset zoom/rot
-const fz=document.getElementById('fbimg-zoom'),fr=document.getElementById('fbimg-rot'),frn=document.getElementById('fbimg-rot-num');if(fz){fz.value=100;document.getElementById('fbimg-zoom-v').textContent='100%';}if(fr){fr.value=0;document.getElementById('fbimg-rot-v').textContent='0°';}if(frn)frn.value=0;draw();};i.src=e.target.result;};r.readAsDataURL(input.files[0]);
-}
+  const r=new FileReader();r.onload=e=>{const i=new Image();i.onload=()=>{footerBgImg=i;document.getElementById('footer-bg-img-preview').src=e.target.result;document.getElementById('footer-bg-img-preview').style.display='block';const fz=document.getElementById('fbimg-zoom'),fr=document.getElementById('fbimg-rot'),frn=document.getElementById('fbimg-rot-num');if(fz){fz.value=100;document.getElementById('fbimg-zoom-v').textContent='100%';}if(fr){fr.value=0;document.getElementById('fbimg-rot-v').textContent='0°';}if(frn)frn.value=0;draw();};i.src=e.target.result;};r.readAsDataURL(input.files[0]);
+};
 // Footer bg zoom
 const fbZoom=document.getElementById('fbimg-zoom'),fbZoomV=document.getElementById('fbimg-zoom-v');
 if(fbZoom){fbZoom.addEventListener('input',()=>{fbZoomV.textContent=fbZoom.value+'%';draw();});}
@@ -588,7 +587,6 @@ const fbRot=document.getElementById('fbimg-rot'),fbRotNum=document.getElementByI
 function syncFbRot(val){const v=Math.max(-180,Math.min(180,parseInt(val)||0));if(fbRot)fbRot.value=v;if(fbRotNum)fbRotNum.value=v;if(fbRotV)fbRotV.textContent=v+'°';draw();}
 if(fbRot)fbRot.addEventListener('input',()=>syncFbRot(fbRot.value));
 if(fbRotNum)fbRotNum.addEventListener('input',()=>syncFbRot(fbRotNum.value));
-};
 
 // ── STYLE BUTTONS ─────────────────────────────────────────────────────────────
 document.querySelectorAll('.sb').forEach(btn=>{
