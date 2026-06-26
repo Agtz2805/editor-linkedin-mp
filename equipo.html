@@ -432,6 +432,8 @@ footer{text-align:center;font-size:10.5px;color:#bbb;margin-top:14px}
 
 <script>
 const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+ctx.imageSmoothingEnabled=true;
+ctx.imageSmoothingQuality='high';
 const W=1200,H=627;
 let userBgImg=null,footerBgImg=null,layout=1,overlayType='azul',footerBgMode='solid',patType='dots';
 const ST={h:{bold:true,italic:false,underline:false},s:{bold:false,italic:false,underline:false},t2:{bold:true,italic:false,underline:false},c:{bold:true,italic:false,underline:false},cr:{bold:false,italic:false,underline:false},ci:{bold:false,italic:false,underline:false}};
@@ -677,6 +679,8 @@ function clearShadow(){setShadow('transparent',false);}
 // Draw image with full 360° rotation
 function drawRotImg(img,x,y,w,h,rot){
   ctx.save();
+  ctx.imageSmoothingEnabled=true;
+  ctx.imageSmoothingQuality='high';
   ctx.translate(x+w/2,y+h/2);
   ctx.rotate(rot*Math.PI/180);
   ctx.drawImage(img,-w/2,-h/2,w,h);
@@ -779,7 +783,7 @@ function draw(){
 
 document.getElementById('dl-png').addEventListener('click',()=>dl('png','post-linkedin-mp.png'));
 document.getElementById('dl-jpg').addEventListener('click',()=>dl('jpeg','post-linkedin-mp.jpg'));
-function dl(t,n){const a=document.createElement('a');a.download=n;a.href=cv.toDataURL('image/'+t,0.95);a.click();}
+function dl(t,n){ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';draw();const a=document.createElement('a');a.download=n;const q=(t==='png')?undefined:1.0;a.href=cv.toDataURL('image/'+t,q);a.click();}
 
 updateFooterPreview();
 
